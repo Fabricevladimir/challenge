@@ -1,4 +1,7 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
+import {Link} from 'react-router-dom';
+
+import './styles/Login.css';
 
 function Login() {
   /************************************
@@ -28,8 +31,8 @@ function Login() {
    * Render
    ************************************/
   return (
-    <div>
-      <h1>Login Up</h1>
+    <div className="log-in">
+      <h1>Login</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="email">Your email</label>
         <input
@@ -49,7 +52,9 @@ function Login() {
 
         <input id="login-btn" type="submit" value="Login" />
       </form>
-      <p>Don't have an account? Sign up here</p>
+      <p>
+        Don't have an account? <Link to="/signup">Sign up here</Link>
+      </p>
     </div>
   );
 }

@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
+import {Link} from 'react-router-dom';
 
 import './styles/SignUp.css';
 
@@ -51,7 +52,9 @@ function SignUp() {
 
         <input id="submit-btn" type="submit" value="Sign Up" />
       </form>
-      <p>Already have an account? Sign in here</p>
+      <p>
+        Already have an account? <Link to="/login">Sign in here</Link>
+      </p>
     </div>
   );
 }

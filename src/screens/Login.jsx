@@ -51,6 +51,7 @@ function Login() {
         />
 
         <input id="login-btn" type="submit" value="Login" />
+        <input id="login-btn" type="submit" value="Login" />
       </form>
       <p>
         Don't have an account? <Link to="/signup">Sign up here</Link>

@@ -4,4 +4,8 @@ function signUp(email, password) {
   return auth.createUserWithEmailAndPassword(email, password);
 }
 
-export {signUp};
+function logIn(email, password) {
+  return auth.signInWithEmailAndPassword(email, password);
+}
+
+export {signUp, logIn};

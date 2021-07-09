@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {Link, useHistory} from 'react-router-dom';
-import Loader from '../components/common/Loader/Loader';
 
+import Loader from '../components/common/Loader/Loader';
 import {signUp} from '../services/authService';
 import './styles/SignUp.css';
 
@@ -27,10 +27,10 @@ function SignUp() {
   }
 
   async function handleSubmit(event) {
+    setIsLoading(true);
+
     // No page loading/ default behavior
     event.preventDefault();
-
-    setIsLoading(true);
 
     // Sign up user and immediately redirect to home/dashboard
     signUp(email, password)

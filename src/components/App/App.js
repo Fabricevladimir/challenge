@@ -15,7 +15,7 @@ function App() {
   return (
     <UserProvider>
       <div className="App">
-        <Router history={history}>
+        <Router history={history} hashType="slash">
           {/* <Toolbar /> */}
           <Suspense fallback={<Loader />}>
             <Routes />

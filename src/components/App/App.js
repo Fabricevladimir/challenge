@@ -1,5 +1,5 @@
 import React, {Suspense} from 'react';
-import {Router} from 'react-router-dom';
+import {HashRouter as Router} from 'react-router-dom';
 import {createBrowserHistory} from 'history';
 
 import Loader from '../common/Loader/Loader';

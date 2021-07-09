@@ -10,7 +10,8 @@ function Routes() {
     <Switch>
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
-      <ProtectedRoute exact path="/" component={Dashboard} />
+      <Route exact path="/" component={Dashboard} />
+      {/* <ProtectedRoute exact path="/" component={Dashboard} /> */}
     </Switch>
   );
 }

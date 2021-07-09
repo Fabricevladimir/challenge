@@ -1,6 +1,5 @@
 import React, {Suspense} from 'react';
 import {HashRouter as Router} from 'react-router-dom';
-import {createBrowserHistory} from 'history';
 
 import Loader from '../common/Loader/Loader';
 // import Toolbar from '../Toolbar/Toolbar';
@@ -10,12 +9,10 @@ import './App.css';
 const Routes = React.lazy(() => import('../Routes/Routes'));
 
 function App() {
-  const history = createBrowserHistory();
-
   return (
     <UserProvider>
       <div className="App">
-        <Router history={history} hashType="slash">
+        <Router hashType="slash">
           {/* <Toolbar /> */}
           <Suspense fallback={<Loader />}>
             <Routes />

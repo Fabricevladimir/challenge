@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-function SignUp() {
+function Login() {
   /************************************
    * State
    ************************************/
@@ -29,7 +29,7 @@ function SignUp() {
    ************************************/
   return (
     <div>
-      <h1>Sign Up</h1>
+      <h1>Login Up</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="email">Your email</label>
         <input
@@ -47,11 +47,11 @@ function SignUp() {
           onChange={handlePasswordChange}
         />
 
-        <input type="submit" value="Sign Up" />
+        <input type="submit" value="Login" />
       </form>
-      <p>Already have an account? Sign in here</p>
+      <p>Don't have an account? Sign up here</p>
     </div>
   );
 }
 
-export default SignUp;
+export default Login;

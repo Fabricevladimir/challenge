@@ -28,7 +28,8 @@
     "printWidth": 80,
     "bracketSpacing": false,
     "trailingComma": "es5",
-    "singleQuote": true
+    "singleQuote": true,
+    "endOfLine": "auto"
   },
   "husky": {
     "hooks": {

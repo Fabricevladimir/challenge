@@ -2,15 +2,14 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 
-// THIS NEEDS TO BE MOVED TO ENV VARIABLES
 const config = {
-  apiKey: 'AIzaSyD-Bsf5gncleNUFkPy6-ZYBkfc0VWasSVM',
-  authDomain: 'challenge-d45fb.firebaseapp.com',
-  projectId: 'challenge-d45fb',
-  storageBucket: 'challenge-d45fb.appspot.com',
-  messagingSenderId: '218821532590',
-  appId: '1:218821532590:web:7cf46e5d5f47669947463f',
-  measurementId: 'G-ZLBMHSSRP0',
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
 
 firebase.initializeApp(config);

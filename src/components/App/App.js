@@ -2,7 +2,7 @@ import React, {Suspense} from 'react';
 import {Router} from 'react-router-dom';
 import {createBrowserHistory} from 'history';
 
-import Toolbar from '../Toolbar/Toolbar';
+// import Toolbar from '../Toolbar/Toolbar';
 import './App.css';
 
 const Routes = React.lazy(() => import('../Routes/Routes'));

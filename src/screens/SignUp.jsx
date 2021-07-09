@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 
+import './styles/SignUp.css';
+
 function SignUp() {
   /************************************
    * State
@@ -28,7 +30,7 @@ function SignUp() {
    * Render
    ************************************/
   return (
-    <div>
+    <div className="sign-up">
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="email">Your email</label>
@@ -47,7 +49,7 @@ function SignUp() {
           onChange={handlePasswordChange}
         />
 
-        <input type="submit" value="Sign Up" />
+        <input id="submit-btn" type="submit" value="Sign Up" />
       </form>
       <p>Already have an account? Sign in here</p>
     </div>

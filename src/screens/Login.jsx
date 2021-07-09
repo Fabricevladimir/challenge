@@ -47,7 +47,7 @@ function Login() {
           onChange={handlePasswordChange}
         />
 
-        <input type="submit" value="Login" />
+        <input id="login-btn" type="submit" value="Login" />
       </form>
       <p>Don't have an account? Sign up here</p>
     </div>

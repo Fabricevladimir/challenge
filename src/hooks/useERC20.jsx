@@ -11,7 +11,6 @@ const signer = provider.getSigner();
 const contract = new ethers.Contract(ERC20Address, ERC20ABI, signer);
 
 function useERC20() {
-  const [log, addToLog] = useState([]);
   const [account, setAccount] = useState('');
   const [balance, setBalance] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -33,14 +32,26 @@ function useERC20() {
 
       setAccount(await signer.getAddress());
 
-      setBalance(await contract.balanceOf(await signer.getAddress()));
+      const currentBalance = await contract.balanceOf(
+        await signer.getAddress()
+      );
+      setBalance(ethers.utils.formatUnits(currentBalance, 18));
 
       setTokenSymbol(await contract.symbol());
 
       const totalSupply = await contract.totalSupply();
-      setTotalSupply(ethers.utils.formatEther(totalSupply));
+      setTotalSupply(ethers.utils.formatUnits(totalSupply, 18));
 
-      subscribe();
+      // Subscribe
+      contract.on('Transfer', (from, to, amount) => {
+        //TODO - set log window
+        console.log(`${from} sent ${formatEther(amount)} to ${to},`);
+      });
+
+      contract.on('Approval', (from, to, amount) => {
+        //TODO - set log window
+        console.log(`${from} sent ${formatEther(amount)} to ${to},`);
+      });
 
       setIsLoading(false);
     } catch (error) {
@@ -51,25 +62,14 @@ function useERC20() {
 
   async function mintTokens(tokensToMint) {
     try {
-      await contract.mint(tokensToMint);
+      await contract.mint(ethers.utils.parseUnits(tokensToMint, 18));
     } catch (error) {
       console.log(error.message);
       alert(error.message);
     }
   }
 
-  function subscribe() {
-    // subscribe to events
-    contract.on('Transfer', (from, amount, event, to) => {
-      addToLog([...log, `${from} sent ${formatEther(amount)} to${to}`]);
-    });
-
-    contract.on('Approval', (from, amount, event, to) => {
-      addToLog([...log, `${from} sent ${formatEther(amount)} to${to}`]);
-    });
-  }
-
-  async function transferTokens(amount, destinationAddress) {
+  async function transferTokens(amount) {
     setIsLoading(true);
     if (amount > balance) {
       throw new Error(
@@ -78,16 +78,28 @@ function useERC20() {
     }
 
     try {
-      setDestinationAddress(destinationAddress);
-      setDestinationBalance(await contract.balanceOf(destinationAddress));
+      // generate new wallet;
+      const receiver = ethers.Wallet.createRandom();
+
+      // show wallet info
+      setDestinationAddress(receiver.address);
+      let receiverBalance = await contract.balanceOf(receiver.address);
+      setDestinationBalance(ethers.utils.formatUnits(receiverBalance, 18));
+
+      // complete transaction
       const tx = await contract.transfer(
-        destinationAddress,
+        receiver.address,
         ethers.utils.parseUnits(amount, 18)
       );
 
       await tx.wait();
-      setDestinationBalance(destinationAddress);
-      setBalance(await contract.balanceOf(await signer.getAddress()));
+
+      // update balance
+      receiverBalance = await contract.balanceOf(receiver.address);
+      setDestinationBalance(ethers.utils.formatUnits(receiverBalance, 18));
+      let currentBalance = await contract.balanceOf(await signer.getAddress());
+      setBalance(ethers.utils.formatUnits(currentBalance, 18));
+
       setIsLoading(false);
     } catch (error) {
       console.log(error.message);

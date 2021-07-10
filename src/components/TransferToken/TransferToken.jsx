@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import './TransferToken.css';
 
-function TransferToken({onTransferToken, isLoading, balance}) {
+function TransferToken({onTransferToken, isLoading, balance, address}) {
   const [tokens, setTokens] = useState(0);
-  const [destinationAddress, setDestinationAddress] = useState('');
 
   return (
     <div className="transfer-token-functionality">
@@ -15,17 +14,11 @@ function TransferToken({onTransferToken, isLoading, balance}) {
         onChange={(e) => setTokens(e.target.value)}
       />
 
-      <label htmlFor="transfer-token-input">Destination:</label>
-      <input
-        id="transfer-token-input"
-        type="text"
-        value={destinationAddress}
-        onChange={(e) => setDestinationAddress(e.target.value)}
-      />
       <p>{`Destination balance: ${balance}`}</p>
+      <p>{`Destination address: ${address}`}</p>
       <button
         type="button"
-        onClick={(e) => onTransferToken(tokens, destinationAddress)}
+        onClick={(e) => onTransferToken(tokens)}
         disabled={isLoading}
         className="btn"
       >

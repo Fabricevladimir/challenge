@@ -1,7 +1,6 @@
 import {useApi} from '@fabricefrancois/use-api';
 import {useEffect} from 'react';
 
-import Logger from '../components/Logger/Logger';
 import Account from '../components/Account/Account';
 import {useERC20} from '../hooks/useERC20';
 import MintTokens from '../components/MintTokens/MintTokens';
@@ -17,7 +16,6 @@ import './styles/Dashboard.css';
 
 function Dashboard() {
   const {
-    log,
     account,
     balance,
     fetchData,
@@ -27,6 +25,7 @@ function Dashboard() {
     totalSupply,
     transferTokens,
     destinationBalance,
+    destinationAddress,
   } = useERC20();
 
   const aragon = useApi(getAragonAntTokenListing);
@@ -35,7 +34,6 @@ function Dashboard() {
   useEffect(() => {
     aragon.request();
     topFive.request();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -50,20 +48,23 @@ function Dashboard() {
         totalSupply={totalSupply}
         onFetchData={fetchData}
       />
+      {account !== '' && (
+        <>
+          <MintTokens onMintTokens={mintTokens} isLoading={isLoading} />
+          <TransferToken
+            onTransferToken={transferTokens}
+            isLoading={isLoading}
+            balance={destinationBalance}
+            address={destinationAddress}
+          />
 
-      <MintTokens onMintTokens={mintTokens} isLoading={isLoading} />
-
-      <TransferToken
-        onTransferToken={transferTokens}
-        isLoading={isLoading}
-        balance={destinationBalance}
-      />
-      <Logger logs={log} />
-      <CryptoListings
-        topFive={topFive.data.data}
-        aragonANT={aragon.data.data?.ANT}
-        isLoading={aragon.isLoading || topFive.isLoading}
-      />
+          <CryptoListings
+            topFive={topFive.data.data}
+            aragonANT={aragon.data.data?.ANT}
+            isLoading={aragon.isLoading || topFive.isLoading}
+          />
+        </>
+      )}
     </div>
   );
 }

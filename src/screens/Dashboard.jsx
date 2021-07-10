@@ -56,7 +56,7 @@ function Dashboard() {
 
       <CryptoListings
         topFive={topFive.data.data}
-        aragonANT={aragon.data.data['ANT']}
+        aragonANT={aragon.data.data?.ANT}
         isLoading={aragon.isLoading || topFive.isLoading}
       />
     </div>

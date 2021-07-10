@@ -8,7 +8,7 @@ function CryptoListings({isLoading, topFive, aragonANT}) {
   return (
     <>
       <h3 className="currency-list-header">Priciest Cryptos Currently</h3>
-      {isLoading && topFive.length === 0 ? (
+      {topFive === [] ? (
         <Loader />
       ) : (
         topFive.map(({id, symbol, name, quote}) => (
@@ -22,12 +22,12 @@ function CryptoListings({isLoading, topFive, aragonANT}) {
       )}
 
       <h3>Aragon ANT</h3>
-      {isLoading && aragonANT === {} ? (
+      {aragonANT === {} ? (
         <loader />
       ) : (
         <CryptoListing
           name={aragonANT.name}
-          price={aragonANT.quote.USD.price}
+          price={aragonANT.quote?.USD.price}
           symbol={aragonANT.symbol}
         />
       )}

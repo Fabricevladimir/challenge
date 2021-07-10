@@ -32,10 +32,7 @@ function useERC20() {
 
       setAccount(await signer.getAddress());
 
-      const currentBalance = await contract.balanceOf(
-        await signer.getAddress()
-      );
-      setBalance(ethers.utils.formatUnits(currentBalance, 18));
+      await updatecurrentBalance();
 
       setTokenSymbol(await contract.symbol());
 
@@ -62,11 +59,18 @@ function useERC20() {
 
   async function mintTokens(tokensToMint) {
     try {
-      await contract.mint(ethers.utils.parseUnits(tokensToMint, 18));
+      const tx = await contract.mint(ethers.utils.parseUnits(tokensToMint, 18));
+      await tx.wait();
+      updatecurrentBalance();
     } catch (error) {
       console.log(error.message);
       alert(error.message);
     }
+  }
+
+  async function updatecurrentBalance() {
+    const currentBalance = await contract.balanceOf(await signer.getAddress());
+    setBalance(ethers.utils.formatUnits(currentBalance, 18));
   }
 
   async function transferTokens(amount) {
@@ -97,8 +101,7 @@ function useERC20() {
       // update balance
       receiverBalance = await contract.balanceOf(receiver.address);
       setDestinationBalance(ethers.utils.formatUnits(receiverBalance, 18));
-      let currentBalance = await contract.balanceOf(await signer.getAddress());
-      setBalance(ethers.utils.formatUnits(currentBalance, 18));
+      await updatecurrentBalance();
 
       setIsLoading(false);
     } catch (error) {

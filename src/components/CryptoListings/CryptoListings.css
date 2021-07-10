@@ -1,0 +1,13 @@
+.currency-list-header {
+  background-color: lightgray;
+  border: 1px solid darkgray;
+  padding: 8px;
+  margin-top: 40px;
+  margin-bottom: 0;
+}
+
+.currency {
+  margin: 0 0 12px;
+  padding: 8px;
+  border-bottom: 1px solid lightgray;
+}

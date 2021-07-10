@@ -3,30 +3,3 @@
   display: flex;
   flex-direction: column;
 }
-
-.account-container {
-  margin: 15px;
-  padding-bottom: 15px;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid lightgray;
-}
-
-.account {
-  border-right: 1px solid lightgray;
-  min-width: 50%;
-  width: 85%;
-}
-
-.btn-container {
-  margin-left: 15px;
-  display: flex;
-  justify-content: center;
-}
-
-.btn {
-  color: white;
-  height: 30px;
-  width: 150px;
-  background-color: green;
-}

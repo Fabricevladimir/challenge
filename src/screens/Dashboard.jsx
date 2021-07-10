@@ -1,6 +1,7 @@
 import {useApi} from '@fabricefrancois/use-api';
 import {useEffect} from 'react';
 
+import Logger from '../components/Logger/Logger';
 import Account from '../components/Account/Account';
 import {useERC20} from '../hooks/useERC20';
 import MintTokens from '../components/MintTokens/MintTokens';
@@ -16,6 +17,7 @@ import './styles/Dashboard.css';
 
 function Dashboard() {
   const {
+    log,
     account,
     balance,
     fetchData,
@@ -24,6 +26,7 @@ function Dashboard() {
     tokenSymbol,
     totalSupply,
     transferTokens,
+    destinationBalance,
   } = useERC20();
 
   const aragon = useApi(getAragonAntTokenListing);
@@ -33,8 +36,6 @@ function Dashboard() {
     aragon.request();
     topFive.request();
 
-    // ideally these calls should be cancelled during the useeffect cleanup
-    // dependency array purposefully left empty
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -52,8 +53,12 @@ function Dashboard() {
 
       <MintTokens onMintTokens={mintTokens} isLoading={isLoading} />
 
-      <TransferToken onTransferToken={transferTokens} isLoading={isLoading} />
-
+      <TransferToken
+        onTransferToken={transferTokens}
+        isLoading={isLoading}
+        balance={destinationBalance}
+      />
+      <Logger logs={log} />
       <CryptoListings
         topFive={topFive.data.data}
         aragonANT={aragon.data.data?.ANT}

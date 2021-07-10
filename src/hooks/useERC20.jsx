@@ -1,5 +1,6 @@
 import {ethers} from 'ethers';
 import {useState} from 'react';
+import {formatEther} from 'ethers/lib/utils';
 
 import ERC20ABI from '../services/Contracts/ERC20.json';
 import {ERC20Address} from '../services/Contracts/constants';
@@ -10,11 +11,14 @@ const signer = provider.getSigner();
 const contract = new ethers.Contract(ERC20Address, ERC20ABI, signer);
 
 function useERC20() {
+  const [log, addToLog] = useState([]);
   const [account, setAccount] = useState('');
-  const [balance, setbalance] = useState(0);
+  const [balance, setBalance] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [totalSupply, setTotalSupply] = useState(0);
   const [tokenSymbol, setTokenSymbol] = useState('');
+  const [destinationAddress, setDestinationAddress] = useState('');
+  const [destinationBalance, setDestinationBalance] = useState('');
 
   /************************************
    * Helper Functions
@@ -29,12 +33,15 @@ function useERC20() {
 
       setAccount(await signer.getAddress());
 
-      setbalance(await contract.balanceOf(await signer.getAddress()));
+      setBalance(await contract.balanceOf(await signer.getAddress()));
 
       setTokenSymbol(await contract.symbol());
 
       const totalSupply = await contract.totalSupply();
       setTotalSupply(ethers.utils.formatEther(totalSupply));
+
+      subscribe();
+
       setIsLoading(false);
     } catch (error) {
       console.log(error.message);
@@ -51,17 +58,56 @@ function useERC20() {
     }
   }
 
-  async function transferTokens(destination, amount) {}
+  function subscribe() {
+    // subscribe to events
+    contract.on('Transfer', (from, amount, event, to) => {
+      addToLog([...log, `${from} sent ${formatEther(amount)} to${to}`]);
+    });
+
+    contract.on('Approval', (from, amount, event, to) => {
+      addToLog([...log, `${from} sent ${formatEther(amount)} to${to}`]);
+    });
+  }
+
+  async function transferTokens(amount, destinationAddress) {
+    setIsLoading(true);
+    if (amount > balance) {
+      throw new Error(
+        'Trying to send more tokens than currently in the balance'
+      );
+    }
+
+    try {
+      setDestinationAddress(destinationAddress);
+      setDestinationBalance(await contract.balanceOf(destinationAddress));
+      const tx = await contract.transfer(
+        destinationAddress,
+        ethers.utils.parseUnits(amount, 18)
+      );
+
+      await tx.wait();
+      setDestinationBalance(destinationAddress);
+      setBalance(await contract.balanceOf(await signer.getAddress()));
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error.message);
+      alert(error.message);
+      setIsLoading(false);
+    }
+  }
 
   return {
     account,
     balance,
+    contract,
     fetchData,
     isLoading,
     mintTokens,
     totalSupply,
     tokenSymbol,
     transferTokens,
+    destinationAddress,
+    destinationBalance,
   };
 }
 
